@@ -1,8 +1,11 @@
 import Link from 'next/link';
 import styles from './login.module.css';
 import Image from 'next/image';
+import { HiAtSymbol, HiFingerPrint } from "react-icons/hi";
+import { useState } from 'react';
 
 export default function Login(){
+    const [showPass, setShowPass] = useState(false);
     return (
         <section className='w-3/4 mx-auto flex flex-col gap-10'>
             <div className='title'>
@@ -17,14 +20,20 @@ export default function Login(){
                         placeholder='Email'
                         className={styles.input_text}
                     />
+                    <span className="icon flex items-center px-4">
+                        <HiAtSymbol size={25}/>
+                    </span>
                 </div>
                 <div className={styles.input_group}>
                     <input 
-                        type='password'
+                        type={showPass ? 'text' : 'password'}
                         name='password'
                         placeholder='Password'
                         className={styles.input_text}
                     />
+                    <span className="icon flex items-center px-4" onClick={() => setShowPass(p => !p)} id={styles.icon_finger}>
+                        <HiFingerPrint size={25}/>
+                    </span>
                 </div>
                 <div className={styles.button}>
                     <button type='submit'>Login</button>

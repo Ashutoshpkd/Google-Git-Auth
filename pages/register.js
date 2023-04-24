@@ -1,15 +1,14 @@
-import Head from 'next/head'
+import Head from 'next/head';
+import Layout from '../layout/layout';
+import RegisterForm from '../components/register/register';
 
 export default function Register(){
     return (
-        <div>
-
-
+    <Layout>
         <Head>
             <title>Register</title>
         </Head>
-
-            <h1>Register</h1>
-        </div>
+        <RegisterForm />
+    </Layout>
     )
 }
