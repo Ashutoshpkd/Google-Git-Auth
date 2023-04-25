@@ -41,3 +41,8 @@
     cursor: pointer;
     color: #6366f1;
 }
+
+.button_disabled {
+    @apply w-full bg-gray-300;
+    @apply py-3 text-gray-50 text-lg;
+}
