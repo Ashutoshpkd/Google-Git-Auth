@@ -3,9 +3,11 @@ import styles from './register.module.css';
 import { HiAtSymbol, HiFingerPrint, HiOutlineUser } from "react-icons/hi";
 import { useState, useRef } from 'react';
 import { isEmailValid, isPasswordValid, isUsernameValid } from '../../helpers/validation';
+import { useRouter } from 'next/router';
 
 export default function Register() {
     const [showPass, setShowPass] = useState({ password: false, cpassword: false });
+    const router =  useRouter();
     const [hasError, setHasError] = useState({
         email: false,
         username: false,
@@ -46,6 +48,26 @@ export default function Register() {
         const username = usernameRef.current.value;
         const pass = passRef.current.value;
         const cpass = cpassRef.current.value;
+
+        const body = {
+            formData: {
+                email,
+                username,
+                password: pass,
+                cpass,
+            }
+        }
+
+        fetch('http://localhost:3000/api/signup', {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers : { 'Content-Type': 'application/json'},
+        }).then(data => {
+            console.log(data);
+            router.push('/login');
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     return (

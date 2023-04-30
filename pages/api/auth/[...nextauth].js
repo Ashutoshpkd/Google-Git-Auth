@@ -1,6 +1,10 @@
 import NextAuth from "next-auth";
+import { compare } from 'bcryptjs';
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
+import CredentialsProvider from "next-auth/providers/credentials";
+import connectMongo from "../../../database/connect";
+import User from "../../../model/Schema";
 
 export default NextAuth({
     providers: [
@@ -11,21 +15,37 @@ export default NextAuth({
         GitHubProvider({
             clientId: process.env.GITHUB_ID,
             clientSecret: process.env.GITHUB_SECRET
-        })
+        }),
+        CredentialsProvider({
+            name : "Credentials",
+            async authorize(credentials, req){
+                console.log('ASHUTOSH -  CRED - ', credentials);
+                connectMongo().catch(error => { console.log(error); throw new Error("Connection failded!") });
+
+                // check user existance
+                const result = await User.findOne( { email : credentials.email});
+                console.log(result);
+                if(!result){
+                    throw new Error("No user Found with Email Please Sign Up...!")
+                }
+
+                // compare()
+                const checkPassword = await compare(credentials.password, result.password);
+                console.log('Checked pass  - ', checkPassword);
+                
+                // incorrect password
+                if(!checkPassword || result.email !== credentials.email){
+                    throw new Error("Username or Password doesn't match");
+                }
+
+                return result;
+
+            }
+        }),
     ],
-    // session: {
-    //     // Set a custom session cookie name
-    //     name: 'myapp.session',
-    //     // Use JSON Web Tokens (JWTs) to store session data
-    //     jwt: true,
-    //     // Use secure cookies in production
-    //     secure: false,
-    // },
-    // cookies: {
-    //     // Use a custom cookie name for the CSRF token
-    //     csrfToken: 'myapp.csrf',
-    //     // Use secure cookies in production
-    //     secure: false,
-    // }
+    secret: 't3Aw+oVs9AuYZtq+DGbVLKi5+Ev8H/0Hl8FR9E0lcs8=',
+    session: {
+        strategy: 'jwt',
+    }
 });
 

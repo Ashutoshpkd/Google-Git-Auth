@@ -46,3 +46,8 @@
     @apply w-full bg-gray-300;
     @apply py-3 text-gray-50 text-lg;
 }
+
+.input_error {
+    @apply flex border border-rose-600 rounded-xl;
+    position: relative;
+}

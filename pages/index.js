@@ -51,9 +51,7 @@ function User({ session }){
 }
 
 export async function getServerSideProps({ req }) {
-  const session = await getSession({req});
-  console.log('ASHUTOSH - session - ', session);
-  console.log('ASHUTOSH cokie - ', req.cookies)
+  const session = await getSession({ req });
 
   if (!session) {
     return {
