@@ -58,7 +58,7 @@ export default function Register() {
             }
         }
 
-        fetch('http://localhost:3000/api/signup', {
+        fetch('https://google-git-auth.vercel.app/api/signup', {
             method: 'POST',
             body: JSON.stringify(body),
             headers : { 'Content-Type': 'application/json'},
